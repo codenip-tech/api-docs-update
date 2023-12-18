@@ -14,12 +14,12 @@ use function json_decode;
 use function sha1;
 use function uniqid;
 
-#[Route('api/products')]
+#[Route('products')]
 class ProductController extends AbstractController
 {
     #[Route(
         path: '',
-        name: 'api_create_product',
+        name: 'public_create_product',
         methods: ['POST']
     )
     ]
@@ -36,7 +36,7 @@ class ProductController extends AbstractController
 
     #[Route(
         path: '',
-        name: 'api_get_all_products',
+        name: 'public_get_all_products',
         methods: ['GET']
     )]
     public function all(): Response
@@ -46,7 +46,7 @@ class ProductController extends AbstractController
 
     #[Route(
         path: '/{id}',
-        name: 'api_get_product_by_id',
+        name: 'public_get_product_by_id',
         methods: ['GET']
     )]
     public function get(string $id): Response
@@ -59,7 +59,7 @@ class ProductController extends AbstractController
 
     #[Route(
         path: '/{id}',
-        name: 'api_update_product',
+        name: 'public_update_product',
         methods: ['PUT']
     )]
     public function put(string $id, Request $request): Response
@@ -75,7 +75,7 @@ class ProductController extends AbstractController
 
     #[Route(
         path: '/{id}',
-        name: 'api_patch_product',
+        name: 'public_patch_product',
         methods: ['PATCH']
     )]
     public function patch(string $id, Request $request): Response
@@ -91,7 +91,7 @@ class ProductController extends AbstractController
 
     #[Route(
         path: '/{id}',
-        name: 'api_delete_product',
+        name: 'public_delete_product',
         methods: ['PATCH']
     )]
     public function delete(string $id): Response

@@ -14,7 +14,7 @@ use function json_decode;
 use function sha1;
 use function uniqid;
 
-#[Route('internal/products')]
+#[Route('products')]
 class ProductController extends AbstractController
 {
     #[Route(

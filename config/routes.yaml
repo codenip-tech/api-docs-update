@@ -1,5 +1,13 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+internal_controllers:
+  resource:
+    path: ../src/Controller/InternalAPI
+    namespace: App\Controller\InternalAPI
+  type: attribute
+  prefix: /internal/v1
+
+public_controllers:
+  resource:
+    path: ../src/Controller/PublicAPI
+    namespace: App\Controller\PublicAPI
+  type: attribute
+  prefix: /public/v1
