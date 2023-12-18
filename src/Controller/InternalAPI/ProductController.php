@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\InternalAPI;
 
+use Nelmio\ApiDocBundle\Annotation as Nelmio;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +17,8 @@ use function sha1;
 use function uniqid;
 
 #[Route('products')]
+#[Nelmio\Areas(['internal'])]
+#[OA\Tag('Products')]
 class ProductController extends AbstractController
 {
     #[Route(
@@ -23,6 +27,12 @@ class ProductController extends AbstractController
         methods: ['POST']
     )
     ]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/ProductRequest'))]
+    #[OA\Response(
+        response: Response::HTTP_CREATED,
+        description: 'Product created',
+        content: new OA\JsonContent(ref: '#/components/schemas/ProductResponse')
+    )]
     public function create(Request $request): Response
     {
         $request->request = new ParameterBag(json_decode($request->getContent(), true));
@@ -39,6 +49,16 @@ class ProductController extends AbstractController
         name: 'internal_get_all_products',
         methods: ['GET']
     )]
+    #[OA\QueryParameter(name: 'limit', schema: new OA\Schema(type: 'number', example: 10))]
+    #[OA\QueryParameter(name: 'created_at', schema: new OA\Schema(type: 'string', format: 'date-time', example: '2023-12-18'))]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'Product list',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: '#/components/schemas/ProductResponse')
+        )
+    )]
     public function all(): Response
     {
         return $this->json([]);
@@ -48,6 +68,11 @@ class ProductController extends AbstractController
         path: '/{id}',
         name: 'internal_get_product_by_id',
         methods: ['GET']
+    )]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'Product details',
+        content: new OA\JsonContent(ref: '#/components/schemas/ProductResponse')
     )]
     public function get(string $id): Response
     {
@@ -61,6 +86,12 @@ class ProductController extends AbstractController
         path: '/{id}',
         name: 'internal_update_product',
         methods: ['PUT']
+    )]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/ProductRequest'))]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'Product fully updated',
+        content: new OA\JsonContent(ref: '#/components/schemas/ProductResponse')
     )]
     public function put(string $id, Request $request): Response
     {
@@ -78,6 +109,12 @@ class ProductController extends AbstractController
         name: 'internal_patch_product',
         methods: ['PATCH']
     )]
+    #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/ProductRequest'))]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'Product partially updated',
+        content: new OA\JsonContent(ref: '#/components/schemas/ProductResponse')
+    )]
     public function patch(string $id, Request $request): Response
     {
         $request->request = new ParameterBag(json_decode($request->getContent(), true));
@@ -92,7 +129,12 @@ class ProductController extends AbstractController
     #[Route(
         path: '/{id}',
         name: 'internal_delete_product',
-        methods: ['PATCH']
+        methods: ['DELETE']
+    )]
+    #[OA\Response(
+        response: Response::HTTP_NO_CONTENT,
+        description: 'Product deleted',
+        content: null
     )]
     public function delete(string $id): Response
     {

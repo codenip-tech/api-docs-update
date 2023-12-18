@@ -1,0 +1,25 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: API Docs Update
+      description: CODENIP
+      version: 1.0.0
+    components:
+      schemas:
+        ProductRequest:
+          type: object
+          properties:
+            name: { type: string, example: 'Product A' }
+        ProductResponse:
+          type: object
+          properties:
+            id: { type: string, example: '2a5c5ba4c9a367f4075c885ec1309d3149c70d3c' }
+            name: { type: string, example: 'Product A' }
+  areas: # to filter documented areas
+    default:
+      path_patterns:
+        - ^/api/v1(?!/doc$) # Accepts routes under /api except /api/doc
+    internal:
+      with_annotation: true
+    public:
+      with_annotation: true
