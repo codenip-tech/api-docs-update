@@ -11,12 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Copy file via rsync
-        run: |
-          rsync -e "ssh -p 2222 -i ${{ secrets.KEY }}" \
-                --archive --verbose --compress --delete \
-                --exclude=".git" --exclude=".github" \
-                build/app.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/root/download/
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          source: "build/app.gz"
+          target: /root/download
   deploy:
     name: Deploy on production
     needs: copy
