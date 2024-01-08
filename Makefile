@@ -51,11 +51,14 @@ build-prod: ## Creates a binary file for PROD environment
 	cp -f .env.prod.dist ${BUILD_DIR}/.env.local
 	cp static-build.Dockerfile ${BUILD_DIR}/static-build.Dockerfile
 	git archive HEAD | tar -x -C ${BUILD_DIR}
-	cd ${BUILD_DIR}
-	rm -Rf tests/
-	rm -Rf docker
-	composer install --ignore-platform-reqs --no-dev -a
-	composer dump-env prod
-	docker build -t static-app -f static-build.Dockerfile .
-	docker cp $(docker create --name static-app-tmp static-app):/go/src/app/dist/frankenphp-linux-x86_64 app ; docker rm static-app-tmp
-	mv app ../../build/app
+	(cd ${BUILD_DIR} && \
+		rm -Rf tests/ && \
+		rm -Rf tools/ && \
+		composer install --ignore-platform-reqs --no-dev -a && \
+		composer dump-env prod && \
+		docker build -t static-app -f static-build.Dockerfile . && \
+		docker cp $$(docker create --name static-app-tmp static-app):/go/src/app/dist/frankenphp-linux-x86_64 app && \
+		docker rm static-app-tmp && \
+		mv app ../../build/app)
+	rm -Rf ${BUILD_DIR}
+
