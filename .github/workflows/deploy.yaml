@@ -18,5 +18,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.KEY }}
-          source: "../../build/app.gz"
+          source: "build/app.gz"
           target: /srv/app.gz
