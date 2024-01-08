@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\InternalAPI;
 
-use App\Entity\Product;
 use App\Service\ProductService;
 use Nelmio\ApiDocBundle\Annotation as Nelmio;
 use OpenApi\Attributes as OA;
@@ -14,10 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-use function array_map;
 use function json_decode;
-use function sha1;
-use function uniqid;
 
 #[Route('products')]
 #[Nelmio\Areas(['internal'])]
@@ -75,12 +71,7 @@ class ProductController extends AbstractController
     {
         $products = $this->productService->all();
 
-        return $this->json(array_map(function (Product $product): array {
-            return [
-                'id' => $product->getId(),
-                'name' => $product->getName(),
-            ];
-        }, $products));
+        return $this->json($products);
     }
 
     #[Route(
