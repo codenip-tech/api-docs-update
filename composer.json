@@ -10,6 +10,9 @@
     "ext-ctype": "*",
     "ext-iconv": "*",
     "doctrine/annotations": "^2.0",
+    "doctrine/doctrine-bundle": "^2.11",
+    "doctrine/doctrine-migrations-bundle": "^3.3",
+    "doctrine/orm": "^2.17",
     "nelmio/api-doc-bundle": "^4.12",
     "symfony/asset": "6.4.*",
     "symfony/console": "6.4.*",
@@ -72,5 +75,9 @@
       "allow-contrib": false,
       "require": "6.4.*"
     }
+  },
+  "require-dev": {
+    "symfony/stopwatch": "6.4.*",
+    "symfony/web-profiler-bundle": "6.4.*"
   }
 }

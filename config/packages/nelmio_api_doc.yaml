@@ -9,11 +9,12 @@ nelmio_api_doc:
         ProductRequest:
           type: object
           properties:
+            id: { type: string, example: '420c1224-f631-42f2-a77f-6e589414a6a2' }
             name: { type: string, example: 'Product A' }
         ProductResponse:
           type: object
           properties:
-            id: { type: string, example: '2a5c5ba4c9a367f4075c885ec1309d3149c70d3c' }
+            id: { type: string, example: '420c1224-f631-42f2-a77f-6e589414a6a2' }
             name: { type: string, example: 'Product A' }
   areas: # to filter documented areas
     default:
