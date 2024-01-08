@@ -2,7 +2,7 @@
 
 UID = $(shell id -u)
 DOCKER_BE = codenip-api-docs-update
-BUILD_DIR = /tmp/build
+BUILD_DIR = var/build
 
 help: ## Show this help message
 	@echo 'usage: make [target]'
@@ -61,4 +61,5 @@ build-prod: ## Creates a binary file for PROD environment
 		docker rm static-app-tmp && \
 		mv app ../../build/app)
 	rm -Rf ${BUILD_DIR}
+	gzip build/app
 

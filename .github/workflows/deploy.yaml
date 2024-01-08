@@ -5,20 +5,6 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-
-      - name: Build binary with Makefile
-        run: make build-prod
 
   deploy:
     name: Deploy
@@ -32,5 +18,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.KEY }}
-          source: "../../build/app"
-          target: /srv/app
+          source: "../../build/app.gz"
+          target: /srv/app.gz
