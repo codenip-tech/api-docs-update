@@ -2,7 +2,7 @@
 
 UID = $(shell id -u)
 DOCKER_BE = codenip-api-docs-update
-BUILD_DIR = var/build
+BUILD_DIR = /tmp/build
 
 help: ## Show this help message
 	@echo 'usage: make [target]'
