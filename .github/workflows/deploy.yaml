@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Copy file via rsync
         run: |
-          rsync -e "ssh -p ${{ secrets.PORT }} -i ${{ secrets.KEY }}" \
+          rsync -e "ssh -p 2222 -i ${{ secrets.KEY }}" \
                 --archive --verbose --compress --delete \
                 --exclude=".git" --exclude=".github" \
                 build/app.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/root/download/
