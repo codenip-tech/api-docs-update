@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\InternalAPI;
 
+use App\Service\ProductService;
 use Nelmio\ApiDocBundle\Annotation as Nelmio;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,11 @@ use function uniqid;
 #[OA\Tag('Products')]
 class ProductController extends AbstractController
 {
+    public function __construct(
+        private readonly ProductService $productService
+    ) {
+    }
+
     #[Route(
         path: '',
         name: 'internal_create_product',
@@ -36,12 +42,16 @@ class ProductController extends AbstractController
     public function create(Request $request): Response
     {
         $request->request = new ParameterBag(json_decode($request->getContent(), true));
+
+        $id = $request->request->get('id');
         $name = $request->request->get('name');
 
+        $product = $this->productService->create($id, $name);
+
         return $this->json([
-            'id' => sha1(uniqid('product')),
-            'name' => $name,
-        ]);
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+        ], Response::HTTP_CREATED);
     }
 
     #[Route(
@@ -61,7 +71,9 @@ class ProductController extends AbstractController
     )]
     public function all(): Response
     {
-        return $this->json([]);
+        $products = $this->productService->all();
+
+        return $this->json($products);
     }
 
     #[Route(
