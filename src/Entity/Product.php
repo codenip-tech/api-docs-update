@@ -8,15 +8,15 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-readonly class Product
+class Product
 {
     public function __construct(
         #[ORM\Id]
         #[ORM\CustomIdGenerator]
         #[ORM\Column]
-        private string $id,
+        private readonly string $id,
         #[ORM\Column(type: 'string', length: 100)]
-        private string $name,
+        private readonly string $name,
     ) {
     }
 

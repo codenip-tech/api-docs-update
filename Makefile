@@ -2,6 +2,7 @@
 
 UID = $(shell id -u)
 DOCKER_BE = codenip-api-docs-update
+BUILD_DIR = var/build
 
 help: ## Show this help message
 	@echo 'usage: make [target]'
@@ -41,3 +42,23 @@ composer-install: ## Installs composer dependencies
 
 ssh: ## bash into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
+
+code-style: ## Run PHP-CS-FIXER
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} composer f:s
+
+build-prod: ## Creates a binary file for PROD environment
+	mkdir ${BUILD_DIR}
+	cp -f .env.prod.dist ${BUILD_DIR}/.env.local
+	cp static-build.Dockerfile ${BUILD_DIR}/static-build.Dockerfile
+	git archive HEAD | tar -x -C ${BUILD_DIR}
+	(cd ${BUILD_DIR} && \
+		rm -Rf tests/ && \
+		rm -Rf tools/ && \
+		composer install --ignore-platform-reqs --no-dev -a && \
+		composer dump-env prod && \
+		docker build -t static-app -f static-build.Dockerfile . && \
+		docker cp $$(docker create --name static-app-tmp static-app):/go/src/app/dist/frankenphp-linux-x86_64 app && \
+		docker rm static-app-tmp && \
+		mv app ../../build/app)
+	rm -Rf ${BUILD_DIR}
+
