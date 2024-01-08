@@ -61,5 +61,4 @@ build-prod: ## Creates a binary file for PROD environment
 		docker rm static-app-tmp && \
 		mv app ../../build/app)
 	rm -Rf ${BUILD_DIR}
-	gzip build/app
 
