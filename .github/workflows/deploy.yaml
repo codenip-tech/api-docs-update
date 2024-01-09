@@ -24,31 +24,32 @@ jobs:
           APP_SECRET: ${{ secrets.APP_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-#  copy:
-#    name: Copy binary to server
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: copy file via ssh password
-#        uses: appleboy/scp-action@v0.1.7
-#        with:
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USERNAME }}
-#          port: ${{ secrets.PORT }}
-#          key: ${{ secrets.KEY }}
-#          source: "build/app"
-#          target: /root/download
-#  deploy:
-#    name: Deploy on production
-#    needs: copy
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Deploy commands
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USERNAME }}
-#          key: ${{ secrets.KEY }}
-#          port: ${{ secrets.PORT }}
-#          script: |
-#            /root/scripts/deploy.sh
+  copy:
+    name: Copy binary to server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          source: "/tmp/app"
+          target: /root/download
+
+  deploy:
+    name: Deploy on production
+    needs: copy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            /root/scripts/deploy.sh
