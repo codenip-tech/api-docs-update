@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.KEY }}
-          source: "/tmp/app"
+          source: "/tmp/build/app"
           target: /root/download
 
   deploy:
