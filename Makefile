@@ -50,6 +50,9 @@ build-prod: ## Creates a binary file for PROD
 	mkdir ${BUILD_DIR}
 	cp static-build.Dockerfile ${BUILD_DIR}/static-build.Dockerfile
 	git archive HEAD | tar -x -C ${BUILD_DIR}
+	echo ${APP_ENV} && \
+	echo ${APP_SECRET} && \
+	echo ${DATABASE_URL} && \
 	(cd ${BUILD_DIR} && \
 		echo APP_ENV=${APP_ENV} > .env.local && \
 		echo APP_SECRET=${APP_SECRET} >> .env.local && \
