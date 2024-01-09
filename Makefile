@@ -46,7 +46,7 @@ ssh: ## bash into the be container
 code-style: ## Run PHP-CS-FIXER
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} composer f:s
 
-build-prod: ## Creates a binary file for PROD environment
+build-prod: ## Creates a binary file for PROD
 	mkdir ${BUILD_DIR}
 	cp static-build.Dockerfile ${BUILD_DIR}/static-build.Dockerfile
 	git archive HEAD | tar -x -C ${BUILD_DIR}
