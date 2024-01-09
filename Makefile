@@ -48,7 +48,6 @@ code-style: ## Run PHP-CS-FIXER
 
 build-prod: ## Creates a binary file for PROD environment
 	mkdir ${BUILD_DIR}
-	cp -f .env.prod.dist ${BUILD_DIR}/.env.local
 	cp static-build.Dockerfile ${BUILD_DIR}/static-build.Dockerfile
 	git archive HEAD | tar -x -C ${BUILD_DIR}
 	(cd ${BUILD_DIR} && \
