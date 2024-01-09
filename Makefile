@@ -51,9 +51,9 @@ build-prod: ## Creates a binary file for PROD environment
 	cp static-build.Dockerfile ${BUILD_DIR}/static-build.Dockerfile
 	git archive HEAD | tar -x -C ${BUILD_DIR}
 	(cd ${BUILD_DIR} && \
-		echo ${{ vars.APP_ENV }} > .env.local
-		echo ${{ vars.APP_SECRET }} >> .env.local
-		echo ${{ vars.DATABASE_URL }} >> .env.local
+		echo ${{ vars.APP_ENV }} > .env.local && \
+		echo ${{ vars.APP_SECRET }} >> .env.local && \
+		echo ${{ vars.DATABASE_URL }} >> .env.local && \
 		rm -Rf tests/ && \
 		rm -Rf tools/ && \
 		composer install --ignore-platform-reqs --no-dev -a && \
@@ -61,5 +61,4 @@ build-prod: ## Creates a binary file for PROD environment
 		docker build -t static-app -f static-build.Dockerfile . && \
 		docker cp $$(docker create --name static-app-tmp static-app):/go/src/app/dist/frankenphp-linux-x86_64 app && \
 		docker rm static-app-tmp)
-	rm -Rf ${BUILD_DIR}
 
