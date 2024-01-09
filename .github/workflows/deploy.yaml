@@ -6,39 +6,52 @@ on:
 
 jobs:
 
-  build:
-    name: Build binary file
+  build_and_copy:
+    name: Build binary file and copy it to the server
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Create SSH key
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "${{ secrets.KEY }}" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+          ssh-keyscan -t rsa ${{ secrets.HOST }} >> $HOME/.ssh/known_hosts
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+
       - name: Build binary
         run: |
           make build-prod
+
         env:
           APP_ENV: ${{ secrets.APP_ENV }}
           APP_SECRET: ${{ secrets.APP_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          HOST: ${{ secrets.HOST }}
 
-  copy:
-    name: Copy binary to server
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.KEY }}
-          source: "/tmp/build/app"
-          target: /root/download
+#  copy:
+#    name: Copy binary to server
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v4
+#
+#      - name: copy file via ssh password
+#        uses: appleboy/scp-action@v0.1.7
+#        with:
+#          host: ${{ secrets.HOST }}
+#          username: ${{ secrets.USERNAME }}
+#          port: ${{ secrets.PORT }}
+#          key: ${{ secrets.KEY }}
+#          source: "/tmp/build/app"
+#          target: /root/download
 
   deploy:
     name: Deploy on production
