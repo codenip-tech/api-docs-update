@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\InternalAPI;
 
+use App\Entity\Product;
 use App\Service\ProductService;
 use Nelmio\ApiDocBundle\Annotation as Nelmio;
 use OpenApi\Attributes as OA;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+use function array_map;
 use function json_decode;
 
 #[Route('products')]
