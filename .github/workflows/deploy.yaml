@@ -55,7 +55,7 @@ jobs:
 
   deploy:
     name: Deploy on production
-    needs: copy
+    needs: build_and_copy
     runs-on: ubuntu-latest
     steps:
       - name: Deploy commands
