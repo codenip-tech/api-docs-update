@@ -60,6 +60,6 @@ build-prod: ## Creates a binary file for PROD
 		composer dump-env prod && \
 		docker build -t static-app -f static-build.Dockerfile . && \
 		docker cp $$(docker create --name static-app-tmp static-app):/go/src/app/dist/frankenphp-linux-x86_64 app && \
-		docker rm static-app-tmp
+		docker rm static-app-tmp && \
 		scp -i $HOME/.ssh/id_rsa app root@${HOST}:/root/download)
 
