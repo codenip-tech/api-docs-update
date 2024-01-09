@@ -51,9 +51,9 @@ build-prod: ## Creates a binary file for PROD
 	cp static-build.Dockerfile ${BUILD_DIR}/static-build.Dockerfile
 	git archive HEAD | tar -x -C ${BUILD_DIR}
 	(cd ${BUILD_DIR} && \
-		echo APP_ENV=${{ secrets.APP_ENV }} > .env.local && \
-		echo APP_SECRET=${{ secrets.APP_SECRET }} >> .env.local && \
-		echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env.local && \
+		echo APP_ENV=${secrets.APP_ENV} > .env.local && \
+		echo APP_SECRET=${secrets.APP_SECRET} >> .env.local && \
+		echo DATABASE_URL=${secrets.DATABASE_URL} >> .env.local && \
 		rm -Rf tests/ && \
 		rm -Rf tools/ && \
 		composer install --ignore-platform-reqs --no-dev -a && \
