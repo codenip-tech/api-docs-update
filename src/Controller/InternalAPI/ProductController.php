@@ -73,7 +73,12 @@ class ProductController extends AbstractController
     {
         $products = $this->productService->all();
 
-        return $this->json($products);
+        return $this->json(array_map(function (Product $product): array {
+            return [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+            ];
+        }, $products));
     }
 
     #[Route(
