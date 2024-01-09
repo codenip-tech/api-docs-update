@@ -54,7 +54,7 @@ build-prod: ## Creates a binary file for PROD
 		echo APP_ENV=${APP_ENV} > .env.local && \
 		echo APP_SECRET=${APP_SECRET} >> .env.local && \
 		echo DATABASE_URL=${DATABASE_URL} >> .env.local && \
-		cat .env.local
+		cat .env.local && \
 		rm -Rf tests/ && \
 		rm -Rf tools/ && \
 		composer install --ignore-platform-reqs --no-dev -a && \
