@@ -19,6 +19,10 @@ jobs:
       - name: Build binary
         run: |
           make build-prod
+        env:
+          APP_ENV: ${{ secrets.APP_ENV }}
+          APP_SECRET: ${{ secrets.APP_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 #  copy:
 #    name: Copy binary to server
