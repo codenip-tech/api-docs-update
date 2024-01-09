@@ -2,7 +2,7 @@
 
 UID = $(shell id -u)
 DOCKER_BE = codenip-api-docs-update
-BUILD_DIR = /tmp/build
+BUILD_DIR = "var/build"
 
 help: ## Show this help message
 	@echo 'usage: make [target]'
@@ -59,7 +59,6 @@ build-prod: ## Creates a binary file for PROD
 		composer install --ignore-platform-reqs --no-dev -a && \
 		composer dump-env prod && \
 		docker build -t static-app -f static-build.Dockerfile . && \
-		docker cp $(docker create --name static-app-tmp static-app):/go/src/app/dist/frankenphp-linux-x86_64 app && \
+		docker cp $$(docker create --name static-app-tmp static-app):/go/src/app/dist/frankenphp-linux-x86_64 app && \
 		docker rm static-app-tmp && \
-		scp -i $HOME/.ssh/id_rsa app root@${HOST}:/root/download)
-
+		scp -i $$HOME/.ssh/id_rsa app root@${HOST}:/root/download)
